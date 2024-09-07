@@ -54,31 +54,19 @@ const places = {
 const grid = new PF.Grid(500, 600); // Create a grid matching your image size
 const finder = new PF.AStarFinder();
 
-// // Example: Group of obstacle coordinates (x, y) representing walls/furniture
-// const obstacles = [
-//   // Example wall
-//   [500, 500],
-//   [501, 500],
-//   [502, 500],
-//   [503, 500],
-//   [504, 500],
-
-//   // Example furniture
-//   [300, 300],
-//   [301, 300],
-//   [300, 301],
-//   [301, 301],
-
-//   // Another obstacle group
-//   [700, 700],
-//   [701, 700],
-//   [702, 700],
-// ];
-
-// // Iterate through the obstacle coordinates and set them as unwalkable
-// obstacles.forEach(([x, y]) => {
-//   grid.setWalkableAt(x, y, false);
-// });
+// Block all the grid cells from [0, 600] to [500, 600] - a wall
+for (let x = 55; x <= 499; x++) {
+  grid.setWalkableAt(x, 75, false); // Set grid cells as non-walkable (obstacle)
+}
+for (let y = 75; y <= 305; y++) {
+  grid.setWalkableAt(71, y, false); // Set grid cells as non-walkable (obstacle)
+}
+for (let y = 375; y <= 599; y++) {
+  grid.setWalkableAt(71, y, false); // Set grid cells as non-walkable (obstacle)
+}
+for (let y = 160; y <= 505; y++) {
+  grid.setWalkableAt(390, y, false); // Set grid cells as non-walkable (obstacle)
+}
 
 // Custom icon for the marker
 const exit = new L.Icon({
@@ -142,6 +130,91 @@ const MapComponent = () => {
 
   // Function to find and set the route between two points
   const findRoute = (startPlace, endPlace) => {
+    //for seat-1
+    for (let y = 90; y <= 580; y++) {
+      grid.setWalkableAt(290, y, false); // Set grid cells as non-walkable (obstacle)
+    }
+    for (let y = 90; y <= 580; y++) {
+      grid.setWalkableAt(355, y, false); // Set grid cells as non-walkable (obstacle)
+    }
+    for (let x = 290; x <= 355; x++) {
+      grid.setWalkableAt(x, 90, false); // Set grid cells as non-walkable (obstacle)
+    }
+    for (let x = 290; x <= 355; x++) {
+      grid.setWalkableAt(x, 580, false); // Set grid cells as non-walkable (obstacle)
+    }
+    //for seat-2
+    for (let y = 390; y <= 580; y++) {
+      grid.setWalkableAt(275, y, false); // Set grid cells as non-walkable (obstacle)
+    }
+    for (let y = 390; y <= 580; y++) {
+      grid.setWalkableAt(110, y, false); // Set grid cells as non-walkable (obstacle)
+    }
+    for (let x = 110; x <= 275; x++) {
+      grid.setWalkableAt(x, 390, false); // Set grid cells as non-walkable (obstacle)
+    }
+    for (let x = 110; x <= 275; x++) {
+      grid.setWalkableAt(x, 580, false); // Set grid cells as non-walkable (obstacle)
+    }
+    //for seat-3
+    for (let y = 87; y <= 285; y++) {
+      grid.setWalkableAt(275, y, false); // Set grid cells as non-walkable (obstacle)
+    }
+    for (let y = 87; y <= 285; y++) {
+      grid.setWalkableAt(105, y, false); // Set grid cells as non-walkable (obstacle)
+    }
+    for (let x = 105; x <= 275; x++) {
+      grid.setWalkableAt(x, 87, false); // Set grid cells as non-walkable (obstacle)
+    }
+    for (let x = 105; x <= 275; x++) {
+      grid.setWalkableAt(x, 285, false); // Set grid cells as non-walkable (obstacle)
+    }
+
+    if (startPlace === "seats1" || endPlace === "seats1") {
+      //for seat-1
+      for (let y = 90; y <= 580; y++) {
+        grid.setWalkableAt(290, y, true); // Set grid cells as non-walkable (obstacle)
+      }
+      for (let y = 90; y <= 580; y++) {
+        grid.setWalkableAt(355, y, true); // Set grid cells as non-walkable (obstacle)
+      }
+      for (let x = 290; x <= 355; x++) {
+        grid.setWalkableAt(x, 90, true); // Set grid cells as non-walkable (obstacle)
+      }
+      for (let x = 290; x <= 355; x++) {
+        grid.setWalkableAt(x, 580, true); // Set grid cells as non-walkable (obstacle)
+      }
+    }
+    if (startPlace === "seats2" || endPlace === "seats2") {
+      //for seat-2
+      for (let y = 390; y <= 580; y++) {
+        grid.setWalkableAt(275, y, true); // Set grid cells as non-walkable (obstacle)
+      }
+      for (let y = 390; y <= 580; y++) {
+        grid.setWalkableAt(110, y, true); // Set grid cells as non-walkable (obstacle)
+      }
+      for (let x = 110; x <= 275; x++) {
+        grid.setWalkableAt(x, 390, true); // Set grid cells as non-walkable (obstacle)
+      }
+      for (let x = 110; x <= 275; x++) {
+        grid.setWalkableAt(x, 580, true); // Set grid cells as non-walkable (obstacle)
+      }
+    }
+    if (startPlace === "seats3" || endPlace === "seats3") {
+      //for seat-3
+      for (let y = 87; y <= 285; y++) {
+        grid.setWalkableAt(275, y, true); // Set grid cells as non-walkable (obstacle)
+      }
+      for (let y = 87; y <= 285; y++) {
+        grid.setWalkableAt(105, y, true); // Set grid cells as non-walkable (obstacle)
+      }
+      for (let x = 105; x <= 275; x++) {
+        grid.setWalkableAt(x, 87, true); // Set grid cells as non-walkable (obstacle)
+      }
+      for (let x = 105; x <= 275; x++) {
+        grid.setWalkableAt(x, 285, true); // Set grid cells as non-walkable (obstacle)
+      }
+    }
     const start = places[startPlace];
     const end = places[endPlace];
 
@@ -153,7 +226,6 @@ const MapComponent = () => {
       grid.clone()
     );
     setPath(path);
-    // alert("path found");
   };
 
   const [start, setStart] = useState("");
