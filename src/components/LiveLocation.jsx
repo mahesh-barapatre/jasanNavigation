@@ -10,8 +10,73 @@ import {
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import PF from "pathfinding";
+import { getUserLocation } from "../utils/geolocation";
+
+// Define the coordinates of the corners of the map
+// const latTopLeft = 23.19063;
+// const lngTopLeft = 79.98589;
+// const latBottomLeft = 23.190617;
+// const lngBottomLeft = 79.986102;
+// const latTopRight = 23.19077;
+// const lngTopRight = 79.98588;
+// const latBottomRight = 23.190791;
+// const lngBottomRight = 79.986106;
+
+// const mapLatLngToCustomMap = (lat, lng) => {
+//   // Latitude range (vertical distance on the map)
+//   const latRange = latTopLeft - latBottomLeft;
+//   // Longitude range (horizontal distance on the map)
+//   const lngRange = lngTopRight - lngTopLeft;
+
+//   // Prevent division by zero or invalid ranges
+//   if (latRange === 0 || lngRange === 0) {
+//     console.error(
+//       "Invalid latitude or longitude range. Please check the map corner coordinates."
+//     );
+//     return { x: 0, y: 0 };
+//   }
+
+//   // Calculate the y (vertical) position based on latitude
+//   const y = ((latTopLeft - lat) / latRange) * 500;
+
+//   // Calculate the x (horizontal) position based on longitude
+//   const x = ((lng - lngTopLeft) / lngRange) * 600;
+
+//   // Return the computed x, y coordinates in pixel space
+//   return { x, y };
+// };
 
 //place dropdown
+
+function findGridCell(x, y) {
+  // Define the boundaries
+  const xMin = 23.19061;
+  const xMax = 23.19079;
+  const yMin = 79.861;
+  const yMax = 79.98589;
+
+  // Define grid dimensions
+  const gridWidth = 600; // number of columns
+  const gridHeight = 500; // number of rows
+
+  // Calculate cell width and height
+  const cellWidth = (xMax - xMin) / gridWidth;
+  const cellHeight = (yMax - yMin) / gridHeight;
+
+  // Calculate the column and row of the point
+  const col = Math.floor((x - xMin) / cellWidth);
+  const row = Math.floor((y - yMin) / cellHeight); // Note: y decreases as we go up
+  console.log(col, row);
+
+  // Ensure the point lies within the grid
+  // if (col < 0 || col >= gridWidth || row < 0 || row >= gridHeight) {
+  //   return "Point is outside the grid.";
+  // }
+
+  console.log("e3");
+  return { row: row + 1, col: col + 1 }; // Return 1-based indexing for rows and columns
+}
+
 const placeInput = [
   { label: "Exit 1", value: "exit1" },
   { label: "Exit 2", value: "exit2" },
@@ -104,9 +169,95 @@ const counter = new L.Icon({
   iconSize: [25, 41],
   iconAnchor: [12.5, 41],
 });
+const live = new L.Icon({
+  iconUrl: "../../public/navigation.png",
+  iconSize: [25, 41],
+  iconAnchor: [12.5, 41],
+});
 
 const MapComponent = () => {
   const [path, setPath] = useState([]);
+  const [userPosition, setUserPosition] = useState([0, 0]);
+
+  const updateLocation = (lat, lng) => {
+    console.log("e2");
+    const { row, col } = findGridCell(lat, lng);
+    console.log(row, col);
+    setUserPosition([col, row]);
+  };
+
+  // useEffect(() => {
+  //   const watchId = navigator.geolocation.watchPosition(
+  //     (position) => {
+  //       const { latitude, longitude } = position.coords;
+  //       console.log(latitude, longitude);
+  //       updateLocation(latitude, longitude);
+  //       // updateLocation(23.1907, 79.98598);
+  //       // updateLocation(23.190696455717163, 79.98604323017034);
+  //     },
+  //     (error) => console.error("Error watching location:", error)
+  //   );
+  //   return () => {
+  //     navigator.geolocation.clearWatch(watchId);
+  //   };
+  // }, []);
+
+  //real time live location
+  // let lastPosition = null;
+
+  // const distanceBetween = (lat1, lon1, lat2, lon2) => {
+  //   const toRad = (value) => (value * Math.PI) / 180;
+  //   const R = 6371e3; // Earth radius in meters
+  //   const φ1 = toRad(lat1);
+  //   const φ2 = toRad(lat2);
+  //   const Δφ = toRad(lat2 - lat1);
+  //   const Δλ = toRad(lon2 - lon1);
+
+  //   const a =
+  //     Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+  //     Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+  //   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  //   return R * c; // Distance in meters
+  // };
+
+  useEffect(() => {
+    const watchId = navigator.geolocation.watchPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        console.log(latitude, longitude);
+        // if (lastPosition) {
+        //   const distance = distanceBetween(
+        //     lastPosition.latitude,
+        //     lastPosition.longitude,
+        //     latitude,
+        //     longitude
+        //   );
+
+        // Only update if the distance moved is greater than 10 meters
+        //   if (distance > 10) {
+        //     // console.log("User moved:", distance, "meters");
+        //     updateLocation(latitude, longitude);
+        //     lastPosition = { latitude, longitude };
+        //   }
+        // } else {
+        // First time setting the position
+        // lastPosition = { latitude, longitude };
+        updateLocation(latitude, longitude);
+        //   }
+      },
+      (error) => console.error("Error watching location:", error),
+      {
+        enableHighAccuracy: true,
+        maximumAge: 2000,
+        timeout: 5000,
+      }
+    );
+
+    return () => {
+      navigator.geolocation.clearWatch(watchId);
+    };
+  }, []);
 
   //marker array
   let icons = [
@@ -129,7 +280,7 @@ const MapComponent = () => {
   ];
 
   // Function to find and set the route between two points
-  const findRoute = (startPlace, endPlace) => {
+  const findRoute = (endPlace) => {
     //for seat-1
     for (let y = 90; y <= 580; y++) {
       grid.setWalkableAt(290, y, false); // Set grid cells as non-walkable (obstacle)
@@ -170,7 +321,7 @@ const MapComponent = () => {
       grid.setWalkableAt(x, 285, false); // Set grid cells as non-walkable (obstacle)
     }
 
-    if (startPlace === "seats1" || endPlace === "seats1") {
+    if (endPlace === "seats1") {
       //for seat-1
       for (let y = 90; y <= 580; y++) {
         grid.setWalkableAt(290, y, true); // Set grid cells as non-walkable (obstacle)
@@ -185,7 +336,7 @@ const MapComponent = () => {
         grid.setWalkableAt(x, 580, true); // Set grid cells as non-walkable (obstacle)
       }
     }
-    if (startPlace === "seats2" || endPlace === "seats2") {
+    if (endPlace === "seats2") {
       //for seat-2
       for (let y = 390; y <= 580; y++) {
         grid.setWalkableAt(275, y, true); // Set grid cells as non-walkable (obstacle)
@@ -200,7 +351,7 @@ const MapComponent = () => {
         grid.setWalkableAt(x, 580, true); // Set grid cells as non-walkable (obstacle)
       }
     }
-    if (startPlace === "seats3" || endPlace === "seats3") {
+    if (endPlace === "seats3") {
       //for seat-3
       for (let y = 87; y <= 285; y++) {
         grid.setWalkableAt(275, y, true); // Set grid cells as non-walkable (obstacle)
@@ -215,12 +366,12 @@ const MapComponent = () => {
         grid.setWalkableAt(x, 285, true); // Set grid cells as non-walkable (obstacle)
       }
     }
-    const start = places[startPlace];
+    // const start = places[startPlace];
     const end = places[endPlace];
 
     const path = finder.findPath(
-      start[0],
-      start[1],
+      userPosition[0],
+      userPosition[1],
       end[0],
       end[1],
       grid.clone()
@@ -228,14 +379,13 @@ const MapComponent = () => {
     setPath(path);
   };
 
-  const [start, setStart] = useState("");
   const [destination, setDestination] = useState("");
 
   const handleRoute = () => {
-    if (start && destination) {
-      findRoute(start, destination);
+    if (userPosition && destination) {
+      findRoute(destination);
     } else {
-      alert("Please select both start and destination.");
+      alert("Please select both userPosition and destination.");
     }
   };
 
@@ -244,22 +394,6 @@ const MapComponent = () => {
       {" "}
       {/* input form */}
       <div className="p-1 flex justify-center items-center">
-        <label className="block text-gray-700">Start:</label>
-        <select
-          value={start}
-          onChange={(e) => setStart(e.target.value)}
-          className="m-2 p-2 border rounded"
-        >
-          <option value="" disabled>
-            Select starting point
-          </option>
-          {placeInput.map((place) => (
-            <option key={place.value} value={place.value}>
-              {place.label}
-            </option>
-          ))}
-        </select>
-
         <label className="block text-gray-700">Destination:</label>
         <select
           value={destination}
@@ -299,6 +433,10 @@ const MapComponent = () => {
             <Popup>{icon.name}</Popup>
           </Marker>
         ))}
+
+        <Marker position={userPosition} icon={live}>
+          <Popup>Your Location</Popup>
+        </Marker>
 
         {/* Display the calculated route */}
         {path.length > 0 && (
