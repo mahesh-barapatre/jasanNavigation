@@ -75,12 +75,12 @@ const exit = new L.Icon({
   iconAnchor: [12.5, 41],
 });
 const enter = new L.Icon({
-  iconUrl: "../../public/login.png",
+  iconUrl: "/login.png",
   iconSize: [25, 41],
   iconAnchor: [12.5, 41],
 });
 const seat = new L.Icon({
-  iconUrl: "../../public/seats.png",
+  iconUrl: "/seats.png",
   iconSize: [41, 50],
   iconAnchor: [12.5, 41],
 });
