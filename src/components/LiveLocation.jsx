@@ -136,42 +136,42 @@ for (let y = 160; y <= 505; y++) {
 
 // Custom icon for the marker
 const exit = new L.Icon({
-  iconUrl: "../../public/exit.png",
+  iconUrl: "/exit.png",
   iconSize: [25, 41],
   iconAnchor: [12.5, 41],
 });
 const enter = new L.Icon({
-  iconUrl: "../../public/login.png",
+  iconUrl: "/login.png",
   iconSize: [25, 41],
   iconAnchor: [12.5, 41],
 });
 const seat = new L.Icon({
-  iconUrl: "../../public/seats.png",
+  iconUrl: "/seats.png",
   iconSize: [41, 50],
   iconAnchor: [12.5, 41],
 });
 const podium = new L.Icon({
-  iconUrl: "../../public/microphone.png",
+  iconUrl: "/microphone.png",
   iconSize: [25, 41],
   iconAnchor: [12.5, 41],
 });
 const stage = new L.Icon({
-  iconUrl: "../../public/theatre.png",
+  iconUrl: "/theatre.png",
   iconSize: [25, 41],
   iconAnchor: [12.5, 41],
 });
 const washroom = new L.Icon({
-  iconUrl: "../../public/restroom.png",
+  iconUrl: "/restroom.png",
   iconSize: [25, 41],
   iconAnchor: [12.5, 41],
 });
 const counter = new L.Icon({
-  iconUrl: "../../public/reception.png",
+  iconUrl: "/reception.png",
   iconSize: [25, 41],
   iconAnchor: [12.5, 41],
 });
 const live = new L.Icon({
-  iconUrl: "../../public/navigation.png",
+  iconUrl: "/navigation.png",
   iconSize: [25, 41],
   iconAnchor: [12.5, 41],
 });
