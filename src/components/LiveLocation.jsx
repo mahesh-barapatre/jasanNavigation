@@ -51,10 +51,10 @@ import { useNavigate } from "react-router-dom";
 
 function findGridCell(x, y) {
   // Define the boundaries
-  const xMin = 23.19061;
+  const xMin = 23.190717;
   const xMax = 23.19079;
-  const yMin = 79.861;
-  const yMax = 79.98589;
+  const yMin = 79.86;
+  const yMax = 79.89;
 
   // Define grid dimensions
   const gridWidth = 600; // number of columns
@@ -172,7 +172,9 @@ const counter = new L.Icon({
 });
 const live = new L.Icon({
   iconUrl: "/navigation.png",
-  iconSize: [25, 41],
+
+  iconSize: [40, 50],
+
   iconAnchor: [12.5, 41],
 });
 
@@ -383,13 +385,7 @@ const MapComponent = () => {
     // const start = places[startPlace];
     const end = places[endPlace];
 
-    const path = finder.findPath(
-      userPosition[0],
-      userPosition[1],
-      end[0],
-      end[1],
-      grid.clone()
-    );
+    const path = finder.findPath(365, 350, end[0], end[1], grid.clone());
     setPath(path);
   };
 
@@ -460,7 +456,7 @@ const MapComponent = () => {
           </Marker>
         ))}
 
-        <Marker position={userPosition} icon={live}>
+        <Marker position={[350, 350]} icon={live}>
           <Popup>Your Location</Popup>
         </Marker>
 
