@@ -316,7 +316,13 @@ const MapComponent = () => {
       grid.setWalkableAt(x, 285, false); // Set grid cells as non-walkable (obstacle)
     }
 
-    if (endPlace === "seats1") {
+    if (
+      (userPosition[0] >= 290 &&
+        userPosition[0] <= 355 &&
+        userPosition[1] >= 90 &&
+        userPosition[1] <= 580) ||
+      endPlace === "seats1"
+    ) {
       //for seat-1
       for (let y = 90; y <= 580; y++) {
         grid.setWalkableAt(290, y, true); // Set grid cells as non-walkable (obstacle)
@@ -331,7 +337,13 @@ const MapComponent = () => {
         grid.setWalkableAt(x, 580, true); // Set grid cells as non-walkable (obstacle)
       }
     }
-    if (endPlace === "seats2") {
+    if (
+      (userPosition[0] >= 110 &&
+        userPosition[0] <= 275 &&
+        userPosition[1] >= 390 &&
+        userPosition[1] <= 580) ||
+      endPlace === "seats2"
+    ) {
       //for seat-2
       for (let y = 390; y <= 580; y++) {
         grid.setWalkableAt(275, y, true); // Set grid cells as non-walkable (obstacle)
@@ -346,7 +358,13 @@ const MapComponent = () => {
         grid.setWalkableAt(x, 580, true); // Set grid cells as non-walkable (obstacle)
       }
     }
-    if (endPlace === "seats3") {
+    if (
+      (userPosition[0] >= 105 &&
+        userPosition[0] <= 275 &&
+        userPosition[1] >= 87 &&
+        userPosition[1] <= 285) ||
+      endPlace === "seats3"
+    ) {
       //for seat-3
       for (let y = 87; y <= 285; y++) {
         grid.setWalkableAt(275, y, true); // Set grid cells as non-walkable (obstacle)
