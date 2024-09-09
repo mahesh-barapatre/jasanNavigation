@@ -286,7 +286,7 @@ const MapComponent = () => {
           className="flex items-center p-2 bg-transparent hover:bg-gray-100 rounded-lg focus:outline-none"
         >
           <img
-            src="../../public/home-button.png" // Replace with the actual path to your image
+            src="/home-button.png" // Replace with the actual path to your image
             alt="Home"
             className="w-6 h-6 mr-2" // Adjust image size as needed
           />
