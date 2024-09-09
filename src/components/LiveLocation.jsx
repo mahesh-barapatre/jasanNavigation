@@ -11,6 +11,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import PF from "pathfinding";
 import { getUserLocation } from "../utils/geolocation";
+import { useNavigate } from "react-router-dom";
 
 // Define the coordinates of the corners of the map
 // const latTopLeft = 23.19063;
@@ -401,6 +402,7 @@ const MapComponent = () => {
       alert("Please select both userPosition and destination.");
     }
   };
+  const navigate = useNavigate();
 
   return (
     <div style={{ height: "100vh", width: "100vw" }}>
@@ -425,6 +427,17 @@ const MapComponent = () => {
 
         <button className="bg-blue-400 p-2 rounded" onClick={handleRoute}>
           Find Route
+        </button>
+        <button
+          onClick={() => navigate("/")}
+          className="flex items-center p-2 bg-transparent hover:bg-gray-100 rounded-lg focus:outline-none"
+        >
+          <img
+            src="../../public/home-button.png" // Replace with the actual path to your image
+            alt="Home"
+            className="w-6 h-6 mr-2" // Adjust image size as needed
+          />
+          <span className="text-gray-700 font-medium">Home</span>
         </button>
       </div>
       {/* Full screen container */}
