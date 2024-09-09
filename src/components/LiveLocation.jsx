@@ -202,62 +202,57 @@ const MapComponent = () => {
   //   };
   // }, []);
 
-  //real time live location
-  // let lastPosition = null;
-
-  // const distanceBetween = (lat1, lon1, lat2, lon2) => {
-  //   const toRad = (value) => (value * Math.PI) / 180;
-  //   const R = 6371e3; // Earth radius in meters
-  //   const φ1 = toRad(lat1);
-  //   const φ2 = toRad(lat2);
-  //   const Δφ = toRad(lat2 - lat1);
-  //   const Δλ = toRad(lon2 - lon1);
-
-  //   const a =
-  //     Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-  //     Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-  //   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-  //   return R * c; // Distance in meters
-  // };
-
   useEffect(() => {
-    const watchId = navigator.geolocation.watchPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        console.log(latitude, longitude);
-        // if (lastPosition) {
-        //   const distance = distanceBetween(
-        //     lastPosition.latitude,
-        //     lastPosition.longitude,
-        //     latitude,
-        //     longitude
-        //   );
+    // Function to get real-time location
+    const getLocation = () => {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          console.log("Real-time location:", latitude, longitude);
 
-        // Only update if the distance moved is greater than 10 meters
-        //   if (distance > 10) {
-        //     // console.log("User moved:", distance, "meters");
-        //     updateLocation(latitude, longitude);
-        //     lastPosition = { latitude, longitude };
-        //   }
-        // } else {
-        // First time setting the position
-        // lastPosition = { latitude, longitude };
-        updateLocation(latitude, longitude);
-        //   }
-      },
-      (error) => console.error("Error watching location:", error),
-      {
-        enableHighAccuracy: true,
-        maximumAge: 2000,
-        timeout: 5000,
-      }
-    );
-
-    return () => {
-      navigator.geolocation.clearWatch(watchId);
+          // Update the location on the map
+          updateLocation(latitude, longitude);
+        },
+        (error) => console.error("Error getting location:", error),
+        {
+          enableHighAccuracy: true,
+          timeout: 2000,
+        }
+      );
     };
-  }, []);
+
+    // Call getLocation every 5 seconds
+    const intervalId = setInterval(getLocation, 2000);
+
+    // Cleanup the interval on component unmount
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []); // Empty dependency array, so it runs once
+
+  // // test live location
+  // useEffect(() => {
+  //   let index = 0;
+
+  //   // Set up the interval to update location every 2 seconds
+  //   const intervalId = setInterval(() => {
+  //     if (index <= 10000) {
+  //       updateLocation(
+  //         23.190714145805945 + index / 100000, // Increment latitude
+  //         79.98599190625755 // Keep longitude constant (you can modify this as needed)
+  //       );
+  //       index++;
+  //     } else {
+  //       // Clear the interval when index reaches 10000
+  //       clearInterval(intervalId);
+  //     }
+  //   }, 2000); // 2 seconds interval
+
+  //   // Cleanup the interval on component unmount
+  //   return () => {
+  //     clearInterval(intervalId);
+  //   };
+  // }, []);
 
   //marker array
   let icons = [
