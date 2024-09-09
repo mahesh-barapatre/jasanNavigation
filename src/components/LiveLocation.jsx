@@ -172,7 +172,9 @@ const counter = new L.Icon({
 });
 const live = new L.Icon({
   iconUrl: "/navigation.png",
+
   iconSize: [40, 50],
+
   iconAnchor: [12.5, 41],
 });
 
