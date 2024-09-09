@@ -10,6 +10,7 @@ import {
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import PF from "pathfinding";
+import { useNavigate } from "react-router-dom";
 
 //place dropdown
 const placeInput = [
@@ -228,6 +229,7 @@ const MapComponent = () => {
     setPath(path);
   };
 
+  const navigate = useNavigate();
   const [start, setStart] = useState("");
   const [destination, setDestination] = useState("");
 
@@ -278,6 +280,17 @@ const MapComponent = () => {
 
         <button className="bg-blue-400 p-2 rounded" onClick={handleRoute}>
           Find Route
+        </button>
+        <button
+          onClick={() => navigate("/")}
+          className="flex items-center p-2 bg-transparent hover:bg-gray-100 rounded-lg focus:outline-none"
+        >
+          <img
+            src="../../public/home-button.png" // Replace with the actual path to your image
+            alt="Home"
+            className="w-6 h-6 mr-2" // Adjust image size as needed
+          />
+          <span className="text-gray-700 font-medium">Home</span>
         </button>
       </div>
       {/* Full screen container */}
