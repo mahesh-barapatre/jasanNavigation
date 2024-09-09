@@ -51,10 +51,10 @@ import { useNavigate } from "react-router-dom";
 
 function findGridCell(x, y) {
   // Define the boundaries
-  const xMin = 23.19061;
+  const xMin = 23.190717;
   const xMax = 23.19079;
-  const yMin = 79.861;
-  const yMax = 79.98589;
+  const yMin = 79.86;
+  const yMax = 79.89;
 
   // Define grid dimensions
   const gridWidth = 600; // number of columns
@@ -136,43 +136,43 @@ for (let y = 160; y <= 505; y++) {
 
 // Custom icon for the marker
 const exit = new L.Icon({
-  iconUrl: "../../public/exit.png",
+  iconUrl: "/exit.png",
   iconSize: [25, 41],
   iconAnchor: [12.5, 41],
 });
 const enter = new L.Icon({
-  iconUrl: "../../public/login.png",
+  iconUrl: "/login.png",
   iconSize: [25, 41],
   iconAnchor: [12.5, 41],
 });
 const seat = new L.Icon({
-  iconUrl: "../../public/seats.png",
+  iconUrl: "/seats.png",
   iconSize: [41, 50],
   iconAnchor: [12.5, 41],
 });
 const podium = new L.Icon({
-  iconUrl: "../../public/microphone.png",
+  iconUrl: "/microphone.png",
   iconSize: [25, 41],
   iconAnchor: [12.5, 41],
 });
 const stage = new L.Icon({
-  iconUrl: "../../public/theatre.png",
+  iconUrl: "/theatre.png",
   iconSize: [25, 41],
   iconAnchor: [12.5, 41],
 });
 const washroom = new L.Icon({
-  iconUrl: "../../public/restroom.png",
+  iconUrl: "/restroom.png",
   iconSize: [25, 41],
   iconAnchor: [12.5, 41],
 });
 const counter = new L.Icon({
-  iconUrl: "../../public/reception.png",
+  iconUrl: "/reception.png",
   iconSize: [25, 41],
   iconAnchor: [12.5, 41],
 });
 const live = new L.Icon({
-  iconUrl: "../../public/navigation.png",
-  iconSize: [25, 41],
+  iconUrl: "/navigation.png",
+  iconSize: [40, 50],
   iconAnchor: [12.5, 41],
 });
 
@@ -383,13 +383,7 @@ const MapComponent = () => {
     // const start = places[startPlace];
     const end = places[endPlace];
 
-    const path = finder.findPath(
-      userPosition[0],
-      userPosition[1],
-      end[0],
-      end[1],
-      grid.clone()
-    );
+    const path = finder.findPath(365, 350, end[0], end[1], grid.clone());
     setPath(path);
   };
 
@@ -433,7 +427,7 @@ const MapComponent = () => {
           className="flex items-center p-2 bg-transparent hover:bg-gray-100 rounded-lg focus:outline-none"
         >
           <img
-            src="../../public/home-button.png" // Replace with the actual path to your image
+            src="/home-button.png" // Replace with the actual path to your image
             alt="Home"
             className="w-6 h-6 mr-2" // Adjust image size as needed
           />
@@ -460,7 +454,7 @@ const MapComponent = () => {
           </Marker>
         ))}
 
-        <Marker position={userPosition} icon={live}>
+        <Marker position={[350, 350]} icon={live}>
           <Popup>Your Location</Popup>
         </Marker>
 

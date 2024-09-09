@@ -71,37 +71,37 @@ for (let y = 160; y <= 505; y++) {
 
 // Custom icon for the marker
 const exit = new L.Icon({
-  iconUrl: "../../public/exit.png",
+  iconUrl: "/exit.png",
   iconSize: [25, 41],
   iconAnchor: [12.5, 41],
 });
 const enter = new L.Icon({
-  iconUrl: "../../public/login.png",
+  iconUrl: "/login.png",
   iconSize: [25, 41],
   iconAnchor: [12.5, 41],
 });
 const seat = new L.Icon({
-  iconUrl: "../../public/seats.png",
+  iconUrl: "/seats.png",
   iconSize: [41, 50],
   iconAnchor: [12.5, 41],
 });
 const podium = new L.Icon({
-  iconUrl: "../../public/microphone.png",
+  iconUrl: "/microphone.png",
   iconSize: [25, 41],
   iconAnchor: [12.5, 41],
 });
 const stage = new L.Icon({
-  iconUrl: "../../public/theatre.png",
+  iconUrl: "/theatre.png",
   iconSize: [25, 41],
   iconAnchor: [12.5, 41],
 });
 const washroom = new L.Icon({
-  iconUrl: "../../public/restroom.png",
+  iconUrl: "/restroom.png",
   iconSize: [25, 41],
   iconAnchor: [12.5, 41],
 });
 const counter = new L.Icon({
-  iconUrl: "../../public/reception.png",
+  iconUrl: "/reception.png",
   iconSize: [25, 41],
   iconAnchor: [12.5, 41],
 });
@@ -286,7 +286,7 @@ const MapComponent = () => {
           className="flex items-center p-2 bg-transparent hover:bg-gray-100 rounded-lg focus:outline-none"
         >
           <img
-            src="../../public/home-button.png" // Replace with the actual path to your image
+            src="/home-button.png" // Replace with the actual path to your image
             alt="Home"
             className="w-6 h-6 mr-2" // Adjust image size as needed
           />
